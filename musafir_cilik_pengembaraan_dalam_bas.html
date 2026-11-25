@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musafir Cilik: Pengembaraan Dalam Bas - Pendidikan Islam Tahun 5</title>
+    <!-- Muat turun Tailwind CSS untuk susun atur responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Muat turun fon mesra buku cerita kanak-kanak moden -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Gaya tersuai untuk suasana ilustrasi buku cerita kanak-kanak 2D yang ceria */
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(180deg, #bae6fd 0%, #fef9c3 55%, #dcfce7 100%);
+            user-select: none;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .font-title {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Animasi bas bergerak / melantun lembut */
+        @keyframes busBounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+        }
+        .animate-bus {
+            animation: busBounce 0.75s infinite ease-in-out;
+        }
+
+        /* Animasi roda bas berpusing */
+        @keyframes wheelSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .wheel-spin {
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: wheelSpin 1.1s linear infinite;
+        }
+
+        /* Animasi awan bergerak perlahan */
+        @keyframes cloudFloat {
+            0% { transform: translateX(-18px); }
+            50% { transform: translateX(22px); }
+            100% { transform: translateX(-18px); }
+        }
+        .animate-cloud {
+            animation: cloudFloat 9s ease-in-out infinite;
+        }
+
+        /* Animasi garisan jalan bergerak apabila bas berjalan */
+        @keyframes roadMove {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -120; }
+        }
+        .road-moving {
+            animation: roadMove 0.85s linear infinite;
+        }
+
+        /* Animasi pokok lalu di luar tingkap bas */
+        @keyframes sceneryPass {
+            0% { transform: translateX(480px); }
+            100% { transform: translateX(-180px); }
+        }
+        .scenery-pass {
+            animation: sceneryPass 5s linear infinite;
+        }
+
+        /* Animasi watak melompat gembira */
+        @keyframes happyJump {
+            0%, 100% { transform: translateY(0) scale(1); }
+            40% { transform: translateY(-14px) scale(1.03); }
+            70% { transform: translateY(-3px) scale(0.99); }
+        }
+        .animate-jump {
+            animation: happyJump 0.85s ease-in-out infinite;
+        }
+
+        /* Animasi pintu bas terbuka */
+        .bus-door {
+            transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: left center;
+            transform-box: fill-box;
+        }
+        .door-open {
+            transform: scaleX(0.15);
+        }
+
+        /* Gaya butang & kad 3D mesra sentuhan */
+        .btn-3d {
+            transition: all 0.16s ease;
+            box-shadow: 0 5px 0 rgba(15, 23, 42, 0.16);
+        }
+        .btn-3d:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 rgba(15, 23, 42, 0.16);
+        }
+        .btn-3d:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 rgba(15, 23, 42, 0.16);
+        }
+
+        /* Animasi peralihan skrin dan kemunculan kad maklum balas */
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.92) translateY(12px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-pop {
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-3 sm:p-5 text-slate-800">
+
+    <!-- Bekas Utama Simulasi -->
+    <main class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl border-4 border-amber-400 overflow-hidden flex flex-col">
+        
+        <!-- Bar Atas: Identiti Mata Pelajaran & Penunjuk Kemajuan -->
+        <header class="bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 px-4 py-3 sm:px-6 flex flex-wrap items-center justify-between gap-2 border-b-4 border-amber-500">
+            <div class="flex items-center gap-2.5">
+                <span class="text-2xl sm:text-3xl bg-white/90 p-1.5 rounded-2xl shadow-sm" aria-hidden="true">🚌</span>
+                <div>
+                    <p class="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-950">Pendidikan Islam Tahun 5 • Bidang Ibadah</p>
+                    <h1 class="text-base sm:text-xl font-bold text-slate-900 leading-tight">Adab Menaiki Kenderaan</h1>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2.5">
+                <!-- Penunjuk Kemajuan Perjalanan ("Babak 1 daripada 5") -->
+                <div id="progressBadge" class="hidden bg-white px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-extrabold text-sky-900 shadow-sm border-2 border-sky-300 flex items-center gap-1.5">
+                    <span>🧭</span>
+                    <span id="stepText">Babak 1 daripada 5</span>
+                </div>
+                <!-- Butang Kawalan Bunyi -->
+                <button id="soundToggle" type="button" onclick="toggleSound()" title="Tukar Bunyi"
+                    class="bg-white hover:bg-amber-50 text-amber-900 p-2 rounded-full shadow border-2 border-amber-600 transition cursor-pointer">
+                    <span id="soundIcon" class="text-lg sm:text-xl">🔊</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Kawasan Pentas Ilustrasi Kartun 2D -->
+        <section class="relative w-full bg-sky-200 border-b-4 border-slate-200 overflow-hidden">
+            <!-- Kanvas SVG Interaktif Dinamik -->
+            <div id="sceneVisual" class="w-full aspect-[16/8] sm:aspect-[16/7] max-h-[330px] flex items-center justify-center">
+                <!-- Kandungan SVG dijana melalui JavaScript mengikut babak -->
+            </div>
+
+            <!-- Lencana Lokasi Semasa di Sudut Kiri Atas Pentas -->
+            <div id="locationTag" class="hidden absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-3.5 py-1.5 rounded-2xl shadow-md border-2 border-sky-400 flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-sky-900">
+                <span id="locationIcon">🏫</span>
+                <span id="locationName">Perkarangan Sekolah</span>
+            </div>
+        </section>
+
+        <!-- Kawasan Interaksi & Pilihan Tindakan -->
+        <section class="p-4 sm:p-6 md:p-7 bg-white flex-1 flex flex-col justify-between">
+            
+            <!-- SKRIN UTAMA: SELAMAT DATANG, MUSAFIR CILIK! -->
+            <div id="startScreen" class="text-center py-1 sm:py-3 space-y-4 animate-pop">
+                <div class="inline-flex items-center gap-2 bg-sky-100 text-sky-900 px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold border-2 border-sky-300">
+                    <span>🌟</span> SELAMAT DATANG, MUSAFIR CILIK!
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-bold text-amber-600 tracking-wide drop-shadow-sm">
+                    MUSAFIR CILIK: PENGEMBARAAN DALAM BAS
+                </h2>
+                <p class="text-base sm:text-lg text-slate-700 max-w-2xl mx-auto leading-relaxed font-bold">
+                    Jom sertai rombongan sekolah! Sepanjang perjalanan, bantu rakan-rakan mengamalkan adab menaiki kenderaan.
+                </p>
+                <div class="pt-2">
+                    <button type="button" onclick="startAdventure()"
+                        class="btn-3d bg-emerald-500 hover:bg-emerald-600 text-white font-title text-xl sm:text-2xl px-8 py-4 rounded-2xl border-2 border-emerald-700 cursor-pointer inline-flex items-center gap-3">
+                        <span>MULA PENGEMBARAAN</span>
+                        <span class="text-2xl">🚌</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PAPARAN BABAK SIMULASI -->
+            <div id="gameplayScreen" class="hidden space-y-5">
+                <!-- Tajuk Misi & Penerangan Situasi -->
+                <div class="bg-gradient-to-r from-sky-50 to-blue-50 border-2 border-sky-200 rounded-2xl p-4 sm:p-5 shadow-sm">
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <span id="chapterBadge" class="bg-sky-600 text-white text-xs sm:text-sm font-extrabold px-3.5 py-1 rounded-full shadow-sm">
+                            BABAK 1
+                        </span>
+                        <h2 id="chapterTitle" class="text-lg sm:text-2xl font-bold text-sky-950">
+                            MISI PERSEDIAAN PERJALANAN
+                        </h2>
+                    </div>
+                    <p id="situationText" class="text-base sm:text-lg text-slate-800 font-bold leading-relaxed">
+                        Esok, kelas kamu akan menyertai lawatan sekolah. Apakah persediaan yang perlu dilakukan sebelum memulakan perjalanan?
+                    </p>
+                </div>
+
+                <!-- Pilihan Tindakan (Kad Bergambar A & B) -->
+                <div id="choicesContainer" class="space-y-3">
+                    <p class="text-sm sm:text-base font-extrabold text-slate-600 flex items-center gap-2">
+                        <span>🧭</span> Pilih tindakan yang paling beradab:
+                    </p>
+                    <div id="buttonsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
+                        <!-- Kad pilihan bergambar dijana secara dinamik -->
+                    </div>
+                </div>
+
+                <!-- Kotak Maklum Balas Serta-Merta -->
+                <div id="feedbackBox" class="hidden rounded-2xl p-4 sm:p-5 border-2 animate-pop shadow-md">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-start gap-3.5">
+                            <div id="feedbackBadgeIcon" class="text-3xl sm:text-4xl bg-white p-2 rounded-2xl shadow-sm border">
+                                ✅
+                            </div>
+                            <div>
+                                <h3 id="feedbackHeading" class="text-lg sm:text-xl font-bold mb-1">
+                                    Bagus!
+                                </h3>
+                                <p id="feedbackMessage" class="text-sm sm:text-base font-bold leading-relaxed">
+                                    Penerangan maklum balas.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Butang Teruskan Perjalanan atau Cuba Semula -->
+                        <div id="feedbackActionArea" class="w-full sm:w-auto flex-shrink-0">
+                            <!-- Dijana oleh JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SKRIN PENAMAT: TAHNIAH, MUSAFIR CILIK! -->
+            <div id="endScreen" class="hidden text-center py-1 sm:py-2 space-y-4 animate-pop">
+                <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-900 px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold border-2 border-emerald-300">
+                    <span>🏆</span> TAHNIAH, MUSAFIR CILIK!
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-bold text-emerald-600 tracking-wide">
+                    SYABAS! PENGEMBARAAN BERJAYA!
+                </h2>
+                <p class="text-base sm:text-lg text-slate-700 max-w-2xl mx-auto leading-relaxed font-bold">
+                    Anda telah berjaya menyelesaikan semua misi! Teruskan mengamalkan adab menaiki kenderaan dalam kehidupan seharian.
+                </p>
+
+                <!-- Rumusan Ringkas Adab Menaiki Kenderaan -->
+                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 sm:p-5 max-w-3xl mx-auto text-left shadow-sm">
+                    <h3 class="text-base sm:text-lg font-bold text-amber-900 mb-3 flex items-center gap-2">
+                        <span>📋</span> Rumusan Adab Menaiki Kenderaan:
+                    </h3>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm sm:text-base font-bold text-slate-800">
+                        <li class="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-amber-200">
+                            <span class="text-emerald-600">✔️</span> Merancang perjalanan.
+                        </li>
+                        <li class="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-amber-200">
+                            <span class="text-emerald-600">✔️</span> Membaca basmalah dan memulakan langkah dengan kaki kanan.
+                        </li>
+                        <li class="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-amber-200">
+                            <span class="text-emerald-600">✔️</span> Membaca doa menaiki kenderaan.
+                        </li>
+                        <li class="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-amber-200">
+                            <span class="text-emerald-600">✔️</span> Berdisiplin dan berhati-hati.
+                        </li>
+                        <li class="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-amber-200">
+                            <span class="text-emerald-600">✔️</span> Menghormati penumpang lain.
+                        </li>
+                        <li class="flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-amber-200">
+                            <span class="text-emerald-600">✔️</span> Menjaga kebersihan kenderaan.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pt-1">
+                    <button type="button" onclick="resetAdventure()"
+                        class="btn-3d bg-sky-500 hover:bg-sky-600 text-white font-title text-xl sm:text-2xl px-8 py-3.5 rounded-2xl border-2 border-sky-700 cursor-pointer inline-flex items-center gap-3">
+                        <span>🔄</span>
+                        <span>ULANG PENGEMBARAAN</span>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        /* =========================================================================
+           1. PENJANA KESAN BUNYI LEMBUT (WEB AUDIO API - TANPA PAUTAN LUAR)
+           ========================================================================= */
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
+            if (soundEnabled) {
+                initAudio();
+                playClickSound();
+            }
+        }
+
+        function playClickSound() {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(520, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(680, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.11, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.09);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.09);
+            } catch (e) {}
+        }
+
+        function playSuccessSound() {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // Nada ceria C5-E5-G5-C6
+                notes.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    const startTime = audioCtx.currentTime + idx * 0.09;
+                    osc.frequency.setValueAtTime(freq, startTime);
+                    gain.gain.setValueAtTime(0.14, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.25);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(startTime);
+                    osc.stop(startTime + 0.25);
+                });
+            } catch (e) {}
+        }
+
+        function playGentleTryAgainSound() {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                const notes = [392.00, 349.23];
+                notes.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    const startTime = audioCtx.currentTime + idx * 0.14;
+                    osc.frequency.setValueAtTime(freq, startTime);
+                    gain.gain.setValueAtTime(0.11, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.22);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(startTime);
+                    osc.stop(startTime + 0.22);
+                });
+            } catch (e) {}
+        }
+
+        function playBusHornSound() {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                [0, 0.18].forEach((offset) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    const t = audioCtx.currentTime + offset;
+                    osc.frequency.setValueAtTime(330, t);
+                    gain.gain.setValueAtTime(0.055, t);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(t);
+                    osc.stop(t + 0.12);
+                });
+            } catch (e) {}
+        }
+
+        /* =========================================================================
+           2. DATA KANDUNGAN PEDAGOGI PENDIDIKAN ISLAM TAHUN 5 (5 BABAK UTAMA)
+           ========================================================================= */
+        const stages = [
+            {
+                babakNumber: 1,
+                badge: "BABAK 1",
+                title: "MISI PERSEDIAAN PERJALANAN",
+                locationIcon: "🏫",
+                locationName: "Perkarangan Sekolah",
+                situation: "Esok, kelas kamu akan menyertai lawatan sekolah. Apakah persediaan yang perlu dilakukan sebelum memulakan perjalanan?",
+                sceneType: "prep",
+                choices: [
+                    {
+                        optionLabel: "A",
+                        text: "Merancang perjalanan dan menyediakan barang keperluan lebih awal.",
+                        icon: "🎒",
+                        cardBadge: "🕒 Awal & Teratur",
+                        isCorrect: true,
+                        feedbackHeading: "Tepat Sekali! ✅",
+                        feedbackDesc: "Bagus! Perancangan awal membantu perjalanan menjadi lebih teratur."
+                    },
+                    {
+                        optionLabel: "B",
+                        text: "Menunggu sehingga saat akhir untuk membuat persediaan.",
+                        icon: "⏰",
+                        cardBadge: "⚡ Kelam-kabut",
+                        isCorrect: false,
+                        feedbackHeading: "Cuba Lagi! 💡",
+                        feedbackDesc: "Cuba fikirkan mengapa persediaan awal penting sebelum memulakan perjalanan."
+                    }
+                ]
+            },
+            {
+                babakNumber: 2,
+                badge: "BABAK 2",
+                title: "MISI MENAIKI BAS",
+                locationIcon: "🚌",
+                locationName: "Hadapan Pintu Bas",
+                situation: "Kamu berada di hadapan pintu bas. Apakah adab yang perlu dilakukan sebelum menaiki kenderaan?",
+                sceneType: "boarding",
+                choices: [
+                    {
+                        optionLabel: "A",
+                        text: "Membaca basmalah dan memulakan langkah dengan kaki kanan.",
+                        icon: "🦶",
+                        cardBadge: "🤲 Beradab & Tertib",
+                        isCorrect: true,
+                        feedbackHeading: "Tahniah! ✅",
+                        feedbackDesc: "Syabas! Mulakan langkah dengan kaki kanan dan membaca basmalah."
+                    },
+                    {
+                        optionLabel: "B",
+                        text: "Terus meluru masuk ke dalam bas kerana tidak sabar.",
+                        icon: "🏃",
+                        cardBadge: "⚠️ Berebut-rebut",
+                        isCorrect: false,
+                        feedbackHeading: "Kurang Tepat! 💡",
+                        feedbackDesc: "Ingat, kita perlu menjaga adab ketika menaiki kenderaan."
+                    }
+                ]
+            },
+            {
+                babakNumber: 3,
+                badge: "BABAK 3",
+                title: "MISI MEMULAKAN PERJALANAN",
+                locationIcon: "🛞",
+                locationName: "Di Dalam Bas (Mula Bertolak)",
+                situation: "Bas akan mula bergerak. Apakah amalan yang sepatutnya dilakukan oleh penumpang Muslim?",
+                sceneType: "dua",
+                choices: [
+                    {
+                        optionLabel: "A",
+                        text: "Membaca doa menaiki kenderaan.",
+                        icon: "🤲",
+                        cardBadge: "🕌 Memohon Perlindungan",
+                        isCorrect: true,
+                        feedbackHeading: "Alhamdulillah! ✅",
+                        feedbackDesc: "Alhamdulillah! Kita hendaklah berdoa memohon perlindungan Allah sepanjang perjalanan."
+                    },
+                    {
+                        optionLabel: "B",
+                        text: "Terus berbual dan bermain tanpa menghiraukan doa.",
+                        icon: "🗣️",
+                        cardBadge: "🙈 Lalai Berdoa",
+                        isCorrect: false,
+                        feedbackHeading: "Cuba Fikirkan Semula! 💡",
+                        feedbackDesc: "Sebelum memulakan perjalanan, apakah amalan mulia untuk memohon keselamatan daripada Allah SWT?"
+                    }
+                ]
+            },
+            {
+                babakNumber: 4,
+                badge: "BABAK 4 (SITUASI 1)",
+                title: "MISI PENUMPANG PRIHATIN",
+                locationIcon: "💺",
+                locationName: "Dalam Perjalanan (Tempat Duduk)",
+                situation: "Seorang warga emas memerlukan tempat duduk. Apakah tindakan yang patut kamu lakukan?",
+                sceneType: "elderly",
+                choices: [
+                    {
+                        optionLabel: "A",
+                        text: "Menawarkan tempat duduk kepada warga emas.",
+                        icon: "💺",
+                        cardBadge: "❤️ Hormat Warga Emas",
+                        isCorrect: true,
+                        feedbackHeading: "Mulia Sungguh! ✅",
+                        feedbackDesc: "Syabas! Mengutamakan warga emas menunjukkan sikap hormat dan prihatin terhadap penumpang lain."
+                    },
+                    {
+                        optionLabel: "B",
+                        text: "Berpura-pura tidak nampak dan terus duduk.",
+                        icon: "🙈",
+                        cardBadge: "😔 Kurang Prihatin",
+                        isCorrect: false,
+                        feedbackHeading: "Cuba Lagi! 💡",
+                        feedbackDesc: "Petunjuk: Warga emas lebih memerlukan tempat duduk demi keselamatan dan keselesaan mereka."
+                    }
+                ]
+            },
+            {
+                babakNumber: 4,
+                badge: "BABAK 4 (SITUASI 2)",
+                title: "MISI PENUMPANG PRIHATIN",
+                locationIcon: "🗑️",
+                locationName: "Dalam Perjalanan (Kebersihan Bas)",
+                situation: "Rakan kamu membuang sampah di dalam bas. Apakah tindakan yang wajar kamu lakukan?",
+                sceneType: "litter",
+                choices: [
+                    {
+                        optionLabel: "A",
+                        text: "Menegur rakan dengan sopan dan membuang sampah ke dalam tong sampah.",
+                        icon: "🗑️",
+                        cardBadge: "♻️ Jaga Kebersihan",
+                        isCorrect: true,
+                        feedbackHeading: "Hebat! ✅",
+                        feedbackDesc: "Hebat! Sikap prihatin dan menjaga kebersihan dapat memberikan keselesaan kepada semua penumpang."
+                    },
+                    {
+                        optionLabel: "B",
+                        text: "Membiarkan sampah tersebut kerana bukan kamu yang membuangnya.",
+                        icon: "🍂",
+                        cardBadge: "🚮 Bas Menjadi Kotor",
+                        isCorrect: false,
+                        feedbackHeading: "Mari Perbaiki! 💡",
+                        feedbackDesc: "Petunjuk: Menjaga kebersihan kenderaan adalah tanggungjawab bersama supaya semua penumpang selesa."
+                    }
+                ]
+            },
+            {
+                babakNumber: 5,
+                badge: "BABAK 5",
+                title: "MISI TIBA DI DESTINASI",
+                locationIcon: "🏛️",
+                locationName: "Destinasi Lawatan",
+                situation: "Kamu sudah tiba di destinasi. Apakah tindakan yang perlu dilakukan sebelum meninggalkan bas?",
+                sceneType: "arrive",
+                choices: [
+                    {
+                        optionLabel: "A",
+                        text: "Turun dengan tertib serta memastikan tiada sampah atau barang tertinggal.",
+                        icon: "✨",
+                        cardBadge: "🎒 Tertib & Bersih",
+                        isCorrect: true,
+                        feedbackHeading: "Tahniah! ✅",
+                        feedbackDesc: "Tahniah! Penumpang yang beradab sentiasa menjaga kebersihan dan keselamatan sehingga tamat perjalanan."
+                    },
+                    {
+                        optionLabel: "B",
+                        text: "Berebut-rebut untuk turun dan meninggalkan sampah di tempat duduk.",
+                        icon: "💥",
+                        cardBadge: "⚠️ Bahaya & Kotor",
+                        isCorrect: false,
+                        feedbackHeading: "Cuba Lagi! 💡",
+                        feedbackDesc: "Petunjuk: Berebut-rebut boleh menyebabkan kecederaan dan meninggalkan sampah mengotorkan bas."
+                    }
+                ]
+            }
+        ];
+
+        let currentStageIndex = 0;
+
+        /* =========================================================================
+           3. ILUSTRASI KARTUN 2D SVG GAYA BUKU CERITA KANAK-KANAK MODEN
+           ========================================================================= */
+        function renderSceneSVG(type, isCompleted = false) {
+            const skyAndClouds = `
+                <defs>
+                    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#38bdf8"/>
+                        <stop offset="100%" stop-color="#e0f2fe"/>
+                    </linearGradient>
+                    <linearGradient id="busBody" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#fde047"/>
+                        <stop offset="100%" stop-color="#f59e0b"/>
+                    </linearGradient>
+                </defs>
+                <rect width="800" height="330" fill="url(#skyGrad)"/>
+                <!-- Matahari ceria -->
+                <circle cx="715" cy="54" r="30" fill="#fef08a" stroke="#f59e0b" stroke-width="3"/>
+                <!-- Awan lembut -->
+                <g class="animate-cloud" fill="#ffffff" opacity="0.92">
+                    <circle cx="120" cy="60" r="20"/>
+                    <circle cx="145" cy="54" r="25"/>
+                    <circle cx="172" cy="62" r="19"/>
+                    <circle cx="430" cy="48" r="17"/>
+                    <circle cx="452" cy="43" r="22"/>
+                    <circle cx="475" cy="50" r="17"/>
+                </g>
+            `;
+
+            // Watak murid sekolah rendah berpakaian sopan (lelaki bersongkok / perempuan bertudung)
+            function drawStudent(x, y, shirtColor, isGirl = false, extraClass = "", pose = "normal", isSmiling = true) {
+                return `
+                <g transform="translate(${x}, ${y})" class="${extraClass}">
+                    <!-- Seluar / Kain sopan -->
+                    <rect x="-11" y="42" width="8" height="18" rx="4" fill="#1e3a8a"/>
+                    <rect x="3" y="42" width="8" height="18" rx="4" fill="#1e3a8a"/>
+                    <!-- Kasut sekolah -->
+                    <rect x="-13" y="56" width="11" height="6" rx="3" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
+                    <rect x="2" y="56" width="11" height="6" rx="3" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
+                    <!-- Baju sekolah / lawatan sopan berlengan panjang -->
+                    <rect x="-16" y="14" width="32" height="32" rx="10" fill="${shirtColor}" stroke="#1e293b" stroke-width="2"/>
+                    <!-- Lengan -->
+                    ${pose === "dua" ? `
+                        <!-- Animasi mengangkat tangan menadah doa -->
+                        <path d="M-15 22 Q-14 34 -5 29" stroke="${shirtColor}" stroke-width="7" stroke-linecap="round" fill="none"/>
+                        <path d="M15 22 Q14 34 5 29" stroke="${shirtColor}" stroke-width="7" stroke-linecap="round" fill="none"/>
+                        <ellipse cx="0" cy="28" rx="10" ry="4.5" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+                    ` : pose === "wave" ? `
+                        <path d="M-15 20 L-23 34" stroke="${shirtColor}" stroke-width="7" stroke-linecap="round"/>
+                        <path d="M15 20 L26 5" stroke="${shirtColor}" stroke-width="7" stroke-linecap="round"/>
+                        <circle cx="26" cy="5" r="4" fill="#fde68a"/>
+                    ` : `
+                        <path d="M-15 20 L-22 35" stroke="${shirtColor}" stroke-width="7" stroke-linecap="round"/>
+                        <path d="M15 20 L22 35" stroke="${shirtColor}" stroke-width="7" stroke-linecap="round"/>
+                    `}
+                    <!-- Kepala -->
+                    <circle cx="0" cy="-4" r="18" fill="#fde68a" stroke="#1e293b" stroke-width="2"/>
+                    ${isGirl ? `
+                        <!-- Tudung sekolah labuh & kemas -->
+                        <path d="M-19 -2 C-20 -24, 20 -24, 19 -2 C20 14, 14 24, 0 24 C-14 24, -20 14, -19 -2 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                        <circle cx="0" cy="-3" r="13" fill="#fde68a"/>
+                    ` : `
+                        <!-- Songkok hitam kemas -->
+                        <path d="M-14 -14 L14 -14 L12 -25 L-12 -25 Z" fill="#1e293b"/>
+                    `}
+                    <!-- Ekspresi Wajah Jelas -->
+                    <circle cx="-5" cy="-4" r="2.2" fill="#1e293b"/>
+                    <circle cx="5" cy="-4" r="2.2" fill="#1e293b"/>
+                    <!-- Pipi ceria -->
+                    <circle cx="-8" cy="1" r="2.5" fill="#fda4af" opacity="0.7"/>
+                    <circle cx="8" cy="1" r="2.5" fill="#fda4af" opacity="0.7"/>
+                    ${isSmiling ? `
+                        <path d="M-5 3 Q0 9 5 3" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    ` : `
+                        <circle cx="0" cy="5" r="2.5" fill="#1e293b"/>
+                    `}
+                </g>`;
+            }
+
+            // Watak Guru Pendidikan Islam yang mesra
+            function drawTeacher(x, y, extraClass = "") {
+                return `
+                <g transform="translate(${x}, ${y})" class="${extraClass}">
+                    <path d="M-18 15 L18 15 L22 68 L-22 68 Z" rx="8" fill="#0d9488" stroke="#115e59" stroke-width="2"/>
+                    <rect x="-12" y="68" width="9" height="10" rx="3" fill="#1e293b"/>
+                    <rect x="3" y="68" width="9" height="10" rx="3" fill="#1e293b"/>
+                    <path d="M-17 22 L-26 42" stroke="#0d9488" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M17 22 L28 30" stroke="#0d9488" stroke-width="8" stroke-linecap="round"/>
+                    <path d="M-21 -4 C-22 -28, 22 -28, 21 -4 C22 16, 15 28, 0 28 C-15 28, -22 16, -21 -4 Z" fill="#ccfbf1" stroke="#0f766e" stroke-width="2"/>
+                    <circle cx="0" cy="-4" r="14" fill="#fde68a"/>
+                    <circle cx="-5" cy="-5" r="4" fill="none" stroke="#1e293b" stroke-width="1.5"/>
+                    <circle cx="5" cy="-5" r="4" fill="none" stroke="#1e293b" stroke-width="1.5"/>
+                    <line x1="-1" y1="-5" x2="1" y2="-5" stroke="#1e293b" stroke-width="1.5"/>
+                    <path d="M-5 3 Q0 9 5 3" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                </g>`;
+            }
+
+            // Ilustrasi Bas Sekolah
+            function drawSchoolBus(x, y, isMoving = false, doorOpened = false) {
+                const busAnim = isMoving ? "animate-bus" : "";
+                const wheelAnim = isMoving ? "wheel-spin" : "";
+                const doorClass = doorOpened ? "bus-door door-open" : "bus-door";
+                return `
+                <g transform="translate(${x}, ${y})" class="${busAnim}">
+                    <!-- Bayang tayar atas jalan -->
+                    <ellipse cx="175" cy="148" rx="172" ry="10" fill="#0f172a" opacity="0.25"/>
+                    <!-- Badan utama bas -->
+                    <rect x="10" y="15" width="330" height="115" rx="24" fill="url(#busBody)" stroke="#b45309" stroke-width="3"/>
+                    <!-- Jalur hitam & putih -->
+                    <rect x="10" y="78" width="330" height="14" fill="#1e293b"/>
+                    <rect x="10" y="83" width="330" height="4" fill="#ffffff"/>
+                    <!-- Papan tanda BAS SEKOLAH -->
+                    <rect x="115" y="6" width="120" height="18" rx="6" fill="#1e293b"/>
+                    <text x="175" y="18" text-anchor="middle" fill="#fde047" font-size="11" font-weight="bold" font-family="sans-serif">BAS SEKOLAH</text>
+                    <!-- Tingkap-tingkap bas -->
+                    <rect x="28" y="30" width="48" height="38" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5"/>
+                    <rect x="86" y="30" width="48" height="38" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5"/>
+                    <rect x="144" y="30" width="48" height="38" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5"/>
+                    <rect x="202" y="30" width="48" height="38" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5"/>
+                    <!-- Cermin pemandu hadapan -->
+                    <path d="M305 28 L332 28 Q340 28 340 38 L340 68 L305 68 Z" fill="#bae6fd" stroke="#0284c7" stroke-width="2.5"/>
+                    <!-- Pintu Bas -->
+                    <rect x="260" y="34" width="36" height="92" rx="6" fill="#334155"/>
+                    <g class="${doorClass}">
+                        <rect x="260" y="34" width="36" height="92" rx="6" fill="#fbbf24" stroke="#92400e" stroke-width="2.5"/>
+                        <rect x="266" y="42" width="24" height="36" rx="4" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                    </g>
+                    <!-- Lampu -->
+                    <circle cx="338" cy="108" r="8" fill="#fef08a" stroke="#ca8a04" stroke-width="2"/>
+                    <rect x="8" y="102" width="8" height="14" rx="3" fill="#ef4444"/>
+                    <!-- Roda hadapan & belakang -->
+                    <g transform="translate(82, 130)">
+                        <g class="${wheelAnim}">
+                            <circle cx="0" cy="0" r="22" fill="#1e293b"/>
+                            <circle cx="0" cy="0" r="10" fill="#cbd5e1"/>
+                            <circle cx="0" cy="0" r="4" fill="#475569"/>
+                        </g>
+                    </g>
+                    <g transform="translate(275, 130)">
+                        <g class="${wheelAnim}">
+                            <circle cx="0" cy="0" r="22" fill="#1e293b"/>
+                            <circle cx="0" cy="0" r="10" fill="#cbd5e1"/>
+                            <circle cx="0" cy="0" r="4" fill="#475569"/>
+                        </g>
+                    </g>
+                </g>`;
+            }
+
+            // SKRIN UTAMA: Bas sekolah menunggu murid di hadapan sekolah (tayarnya elok di atas jalan)
+            if (type === "start") {
+                return `<svg viewBox="0 0 800 330" class="w-full h-full">
+                    ${skyAndClouds}
+                    <!-- Bukit hijau -->
+                    <path d="M0 245 Q250 190 500 245 T800 225 L800 330 L0 330 Z" fill="#86efac"/>
+                    <!-- Bangunan Sekolah di sebelah kiri -->
+                    <rect x="35" y="100" width="215" height="145" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+                    <polygon points="25,100 142,50 260,100" fill="#ef4444" stroke="#b91c1c" stroke-width="3"/>
+                    <rect x="92" y="110" width="100" height="22" rx="4" fill="#1e3a8a"/>
+                    <text x="142" y="125" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="bold">SEKOLAH KEBANGSAAN</text>
+                    <rect x="55" y="145" width="42" height="36" rx="4" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/>
+                    <rect x="188" y="145" width="42" height="36" rx="4" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/>
+                    <rect x="120" y="178" width="44" height="67" rx="4" fill="#92400e"/>
+                    <!-- Jalan Raya -->
+                    <rect x="0" y="245" width="800" height="85" fill="#475569"/>
+                    <line x1="0" y1="298" x2="800" y2="298" stroke="#facc15" stroke-width="6" stroke-dasharray="35 25"/>
+                    <!-- Bas Sekolah Menunggu Murid di Hadapan Sekolah (Pintu Terbuka & Tayar di atas jalan) -->
+                    ${drawSchoolBus(330, 134, false, true)}
+                    <!-- Guru & Murid melambai ceria -->
+                    ${drawTeacher(280, 178, "")}
+                    ${drawStudent(695, 194, "#3b82f6", false, "animate-jump", "wave", true)}
+                    ${drawStudent(742, 194, "#ec4899", true, "animate-jump", "wave", true)}
+                </svg>`;
+            }
+
+            // BABAK 1: MISI PERSEDIAAN PERJALANAN (Guru & murid bersiap dengan beg & senarai semak)
+            if (type === "prep") {
+                const animClass = isCompleted ? "animate-jump" : "";
+                return `<svg viewBox="0 0 800 330" class="w-full h-full">
+                    ${skyAndClouds}
+                    <rect x="0" y="245" width="800" height="85" fill="#94a3b8"/>
+                    <rect x="0" y="245" width="800" height="14" fill="#22c55e"/>
+                    <!-- Bilik / Dewan Persediaan Sekolah -->
+                    <rect x="55" y="85" width="270" height="160" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="3"/>
+                    <rect x="85" y="102" width="210" height="24" rx="6" fill="#0284c7"/>
+                    <text x="190" y="118" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="bold">SENARAI SEMAK LAWATAN</text>
+                    <!-- Beg Galas & Jam Dinding -->
+                    <circle cx="115" cy="165" r="20" fill="#ffffff" stroke="#1e293b" stroke-width="2.5"/>
+                    <line x1="115" y1="165" x2="115" y2="153" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="115" y1="165" x2="124" y2="165" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>
+                    <rect x="165" y="155" width="44" height="52" rx="12" fill="#f97316" stroke="#9a3412" stroke-width="2.5"/>
+                    <rect x="174" y="175" width="26" height="20" rx="5" fill="#fed7aa"/>
+                    <rect x="230" y="155" width="44" height="52" rx="12" fill="#8b5cf6" stroke="#5b21b6" stroke-width="2.5"/>
+                    <rect x="239" y="175" width="26" height="20" rx="5" fill="#ddd6fe"/>
+
+                    <!-- Guru dan murid bersiap -->
+                    ${drawTeacher(385, 178, animClass)}
+                    ${drawStudent(460, 194, "#3b82f6", false, animClass, isCompleted ? "wave" : "normal", true)}
+                    ${drawStudent(520, 194, "#ec4899", true, animClass, isCompleted ? "wave" : "normal", true)}
+                    ${drawStudent(580, 194, "#10b981", false, animClass, isCompleted ? "wave" : "normal", true)}
+
+                    ${isCompleted ? `
+                        <g transform="translate(455, 95)" class="animate-pop">
+                            <rect x="0" y="0" width="175" height="44" rx="14" fill="#10b981" stroke="#ffffff" stroke-width="3"/>
+                            <text x="87" y="28" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">✅ PERSEDIAAN SIAP!</text>
+                        </g>
+                    ` : ""}
+                </svg>`;
+            }
+
+            // BABAK 2: MISI MENAIKI BAS (Murid beratur & melangkah kaki kanan)
+            if (type === "boarding") {
+                const studentX = isCompleted ? 495 : 335;
+                const studentY = isCompleted ? 174 : 194;
+                return `<svg viewBox="0 0 800 330" class="w-full h-full">
+                    ${skyAndClouds}
+                    <rect x="0" y="245" width="800" height="85" fill="#475569"/>
+                    <rect x="0" y="245" width="800" height="12" fill="#22c55e"/>
+                    <!-- Bas Sekolah berhenti dengan pintu terbuka -->
+                    ${drawSchoolBus(235, 120, false, true)}
+                    <!-- Guru mengiringi murid beratur -->
+                    ${drawTeacher(165, 178, "")}
+                    <!-- Murid beratur tertib -->
+                    ${drawStudent(225, 194, "#ec4899", true, "", "normal", true)}
+                    ${drawStudent(280, 194, "#f97316", false, "", "normal", true)}
+                    ${drawStudent(studentX, studentY, "#3b82f6", false, isCompleted ? "animate-jump" : "", "normal", true)}
+                    ${isCompleted ? `
+                        <g transform="translate(460, 88)" class="animate-pop">
+                            <rect x="0" y="0" width="195" height="44" rx="14" fill="#f59e0b" stroke="#ffffff" stroke-width="3"/>
+                            <text x="97" y="27" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="bold">بِسْمِ اللَّهِ • Kaki Kanan</text>
+                        </g>
+                    ` : ""}
+                </svg>`;
+            }
+
+            // BABAK 3: MISI MEMULAKAN PERJALANAN (Semua duduk & guru beri isyarat berdoa)
+            if (type === "dua") {
+                const pose = isCompleted ? "dua" : "normal";
+                return `<svg viewBox="0 0 800 330" class="w-full h-full">
+                    ${skyAndClouds}
+                    <rect x="0" y="210" width="800" height="120" fill="#22c55e"/>
+                    <!-- Dalaman Bas Sekolah -->
+                    <rect x="65" y="30" width="670" height="275" rx="28" fill="#fef9c3" stroke="#eab308" stroke-width="6"/>
+                    <!-- Tingkap Bas -->
+                    <rect x="105" y="55" width="265" height="112" rx="16" fill="#bae6fd" stroke="#0284c7" stroke-width="4"/>
+                    <rect x="430" y="55" width="265" height="112" rx="16" fill="#bae6fd" stroke="#0284c7" stroke-width="4"/>
+                    <!-- Kerusi Penumpang -->
+                    <rect x="125" y="148" width="75" height="108" rx="14" fill="#3b82f6" stroke="#1d4ed8" stroke-width="3"/>
+                    <rect x="295" y="148" width="75" height="108" rx="14" fill="#3b82f6" stroke="#1d4ed8" stroke-width="3"/>
+                    <rect x="465" y="148" width="75" height="108" rx="14" fill="#3b82f6" stroke="#1d4ed8" stroke-width="3"/>
+                    <!-- Guru memberi isyarat di bahagian hadapan -->
+                    ${drawTeacher(645, 178, isCompleted ? "animate-jump" : "")}
+                    <!-- Murid-murid duduk & mengangkat tangan membaca doa apabila dipilih -->
+                    ${drawStudent(180, 192, "#60a5fa", false, "", pose, true)}
+                    ${drawStudent(350, 192, "#f472b6", true, "", pose, true)}
+                    ${drawStudent(520, 192, "#34d399", false, "", pose, true)}
+                    ${isCompleted ? `
+                        <g transform="translate(220, 68)" class="animate-pop">
+                            <rect x="0" y="0" width="330" height="46" rx="16" fill="#10b981" stroke="#ffffff" stroke-width="3"/>
+                            <text x="165" y="29" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">🤲 Membaca Doa Menaiki Kenderaan</text>
+                        </g>
+                    ` : ""}
+                </svg>`;
+            }
+
+            // BABAK 4 (SITUASI 1): MISI PENUMPANG PRIHATIN (Warga emas menaiki bas bergerak)
+            if (type === "elderly") {
+                return `<svg viewBox="0 0 800 330" class="w-full h-full">
+                    ${skyAndClouds}
+                    <rect x="0" y="210" width="800" height="120" fill="#22c55e"/>
+                    <!-- Dalaman Bas Bergerak -->
+                    <rect x="65" y="30" width="670" height="275" rx="28" fill="#fef9c3" stroke="#eab308" stroke-width="6"/>
+                    <rect x="105" y="55" width="265" height="112" rx="16" fill="#bae6fd" stroke="#0284c7" stroke-width="4"/>
+                    <rect x="430" y="55" width="265" height="112" rx="16" fill="#bae6fd" stroke="#0284c7" stroke-width="4"/>
+                    <!-- Pokok bergerak di luar tingkap menandakan bas sedang bergerak -->
+                    <g class="scenery-pass">
+                        <circle cx="160" cy="115" r="24" fill="#22c55e"/>
+                        <rect x="155" y="132" width="10" height="32" fill="#92400e"/>
+                    </g>
+                    <!-- Kerusi Khas -->
+                    <rect x="145" y="148" width="88" height="108" rx="14" fill="#f59e0b" stroke="#b45309" stroke-width="3"/>
+                    
+                    ${isCompleted ? `
+                        <!-- Warga emas duduk selesa & murid tersenyum di sebelah -->
+                        <g transform="translate(202, 188)">
+                            <rect x="-16" y="14" width="32" height="34" rx="10" fill="#a855f7" stroke="#581c87" stroke-width="2"/>
+                            <circle cx="0" cy="-4" r="18" fill="#fde68a" stroke="#1e293b" stroke-width="2"/>
+                            <path d="M-16 -12 Q0 -24 16 -12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="4"/>
+                            <circle cx="-5" cy="-4" r="2.2" fill="#1e293b"/>
+                            <circle cx="5" cy="-4" r="2.2" fill="#1e293b"/>
+                            <path d="M-6 4 Q0 10 6 4" stroke="#1e293b" stroke-width="2" fill="none"/>
+                        </g>
+                        ${drawStudent(315, 196, "#3b82f6", false, "animate-jump", "wave", true)}
+                        <g transform="translate(365, 98)" class="animate-pop">
+                            <rect x="0" y="0" width="285" height="46" rx="16" fill="#10b981" stroke="#ffffff" stroke-width="3"/>
+                            <text x="142" y="29" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">❤️ "Terima kasih banyak, nak!"</text>
+                        </g>
+                    ` : `
+                        ${drawStudent(202, 192, "#3b82f6", false, "", "normal", true)}
+                        <g transform="translate(370, 186)">
+                            <rect x="-16" y="14" width="32" height="44" rx="10" fill="#a855f7" stroke="#581c87" stroke-width="2"/>
+                            <circle cx="0" cy="-4" r="18" fill="#fde68a" stroke="#1e293b" stroke-width="2"/>
+                            <path d="M-16 -12 Q0 -24 16 -12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="4"/>
+                            <circle cx="-5" cy="-4" r="2.2" fill="#1e293b"/>
+                            <circle cx="5" cy="-4" r="2.2" fill="#1e293b"/>
+                            <path d="M-4 5 Q0 3 4 5" stroke="#1e293b" stroke-width="2" fill="none"/>
+                            <path d="M22 25 L22 65 M22 25 Q28 18 32 25" stroke="#78350f" stroke-width="4" fill="none" stroke-linecap="round"/>
+                        </g>
+                    `}
+                </svg>`;
+            }
+
+            // BABAK 4 (SITUASI 2): MISI PENUMPANG PRIHATIN (Kebersihan dalam bas)
+            if (type === "litter") {
+                return `<svg viewBox="0 0 800 330" class="w-full h-full">
+                    ${skyAndClouds}
+                    <rect x="0" y="210" width="800" height="120" fill="#22c55e"/>
+                    <rect x="65" y="30" width="670" height="275" rx="28" fill="#fef9c3" stroke="#eab308" stroke-width="6"/>
+                    <rect x="105" y="55" width="265" height="112" rx="16" fill="#bae6fd" stroke="#0284c7" stroke-width="4"/>
+                    <rect x="430" y="55" width="265" height="112" rx="16" fill="#bae6fd" stroke="#0284c7" stroke-width="4"/>
+                    <!-- Tong Sampah di dalam bas -->
+                    <g transform="translate(565, 192)">
+                        <path d="M0 10 L46 10 L40 65 L6 65 Z" fill="#10b981" stroke="#047857" stroke-width="3"/>
+                        <rect x="-4" y="4" width="54" height="8" rx="4" fill="#059669"/>
+                        <text x="23" y="43" text-anchor="middle" fill="#ffffff" font-size="18">♻️</text>
+                    </g>
+                    <!-- Rakan & Murid -->
+                    ${drawStudent(245, 196, "#f97316", false, "", "normal", isCompleted)}
+                    ${drawStudent(380, 196, "#ec4899", true, isCompleted ? "animate-jump" : "", isCompleted ? "wave" : "normal", true)}
+                    
+                    ${isCompleted ? `
+                        <g transform="translate(230, 82)" class="animate-pop">
+                            <rect x="0" y="0" width="335" height="46" rx="16" fill="#10b981" stroke="#ffffff" stroke-width="3"/>
+                            <text x="167" y="29" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">✨ Bas Bersih & Selesa Untuk Semua!</text>
+                        </g>
+                    ` : `
+                        <!-- Pembungkus makanan ringan di lantai bas -->
+                        <polygon points="300,256 322,248 318,262 296,264" fill="#fca5a5" stroke="#ef4444" stroke-width="2"/>
+                        <circle cx="336" cy="256" r="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+                    `}
+                </svg>`;
+            }
+
+            // BABAK 5: MISI TIBA DI DESTINASI (Tiba di destinasi & turun dengan tertib)
+            if (type === "arrive") {
+                const anim = isCompleted ? "animate-jump" : "";
+                return `<svg viewBox="0 0 800 330" class="w-full h-full">
+                    ${skyAndClouds}
+                    <!-- Bangunan Destinasi Lawatan -->
+                    <rect x="440" y="72" width="310" height="173" rx="10" fill="#fde68a" stroke="#d97706" stroke-width="3"/>
+                    <polygon points="425,72 595,22 765,72" fill="#0284c7" stroke="#0369a1" stroke-width="3"/>
+                    <rect x="515" y="84" width="160" height="26" rx="6" fill="#1e293b"/>
+                    <text x="595" y="102" text-anchor="middle" fill="#fde047" font-size="12" font-weight="bold">DESTINASI LAWATAN</text>
+                    <rect x="470" y="122" width="16" height="123" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                    <rect x="530" y="122" width="16" height="123" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                    <rect x="645" y="122" width="16" height="123" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                    <rect x="705" y="122" width="16" height="123" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                    <rect x="570" y="172" width="50" height="73" rx="4" fill="#78350f"/>
+
+                    <rect x="0" y="245" width="800" height="85" fill="#475569"/>
+                    <rect x="0" y="245" width="800" height="12" fill="#22c55e"/>
+
+                    <!-- Bas Sekolah berhenti dengan pintu terbuka -->
+                    ${drawSchoolBus(55, 120, false, true)}
+
+                    <!-- Guru & Murid turun dengan tertib -->
+                    ${drawTeacher(435, 178, anim)}
+                    ${drawStudent(495, 194, "#3b82f6", false, anim, isCompleted ? "wave" : "normal", true)}
+                    ${drawStudent(545, 194, "#ec4899", true, anim, isCompleted ? "wave" : "normal", true)}
+                </svg>`;
+            }
+
+            // SKRIN PENAMAT: Semua murid dan guru gembira di destinasi
+            if (type === "end") {
+                return `<svg viewBox="0 0 800 330" class="w-full h-full">
+                    ${skyAndClouds}
+                    <rect x="455" y="75" width="295" height="170" rx="10" fill="#fef08a" stroke="#eab308" stroke-width="3"/>
+                    <polygon points="440,75 602,25 765,75" fill="#10b981" stroke="#047857" stroke-width="3"/>
+                    <rect x="522" y="88" width="160" height="26" rx="6" fill="#064e3b"/>
+                    <text x="602" y="106" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">MISI BERJAYA!</text>
+                    <rect x="0" y="245" width="800" height="85" fill="#475569"/>
+                    <rect x="0" y="245" width="800" height="12" fill="#22c55e"/>
+
+                    ${drawSchoolBus(48, 120, false, true)}
+
+                    ${drawTeacher(435, 178, "animate-jump")}
+                    ${drawStudent(500, 194, "#3b82f6", false, "animate-jump", "wave", true)}
+                    ${drawStudent(555, 194, "#ec4899", true, "animate-jump", "wave", true)}
+                    ${drawStudent(610, 194, "#f97316", false, "animate-jump", "wave", true)}
+                    ${drawStudent(665, 194, "#8b5cf6", true, "animate-jump", "wave", true)}
+
+                    <text x="445" y="65" font-size="28">⭐</text>
+                    <text x="695" y="62" font-size="28">🎉</text>
+                    <text x="385" y="100" font-size="24">✨</text>
+                </svg>`;
+            }
+        }
+
+        /* =========================================================================
+           4. KAWALAN ALIRAN SIMULASI & INTERAKTIVITI
+           ========================================================================= */
+        function initApp() {
+            document.getElementById('sceneVisual').innerHTML = renderSceneSVG('start');
+        }
+
+        function startAdventure() {
+            playBusHornSound();
+            currentStageIndex = 0;
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('endScreen').classList.add('hidden');
+            document.getElementById('gameplayScreen').classList.remove('hidden');
+            document.getElementById('progressBadge').classList.remove('hidden');
+            document.getElementById('locationTag').classList.remove('hidden');
+            loadStage(currentStageIndex);
+        }
+
+        function loadStage(index) {
+            const stage = stages[index];
+
+            // Paparkan penunjuk kemajuan "Babak X daripada 5"
+            document.getElementById('stepText').textContent = `Babak ${stage.babakNumber} daripada 5`;
+            document.getElementById('locationIcon').textContent = stage.locationIcon;
+            document.getElementById('locationName').textContent = stage.locationName;
+
+            // Kemas kini maklumat babak & situasi
+            document.getElementById('chapterBadge').textContent = stage.badge;
+            document.getElementById('chapterTitle').textContent = stage.title;
+            document.getElementById('situationText').textContent = stage.situation;
+
+            // Papar ilustrasi khusus babak
+            document.getElementById('sceneVisual').innerHTML = renderSceneSVG(stage.sceneType, false);
+
+            // Sembunyikan kotak maklum balas & paparkan kad pilihan bergambar
+            const feedbackBox = document.getElementById('feedbackBox');
+            feedbackBox.classList.add('hidden');
+            document.getElementById('choicesContainer').classList.remove('hidden');
+
+            const buttonsGrid = document.getElementById('buttonsGrid');
+            buttonsGrid.innerHTML = '';
+
+            // Paparkan pilihan A dan B sebagai kad bergambar yang menarik
+            stage.choices.forEach((choice) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = "btn-3d w-full text-left bg-gradient-to-br from-amber-50 to-orange-50 hover:from-amber-100 hover:to-orange-100 border-3 border-amber-400 rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-3 transition cursor-pointer group";
+                btn.innerHTML = `
+                    <div class="flex items-center justify-between w-full">
+                        <span class="bg-amber-500 text-white font-title text-sm sm:text-base px-3 py-0.5 rounded-lg shadow-sm">
+                            Pilihan ${choice.optionLabel}
+                        </span>
+                        <span class="text-xs font-extrabold text-amber-900 bg-white/90 px-2.5 py-1 rounded-full border border-amber-300">
+                            ${choice.cardBadge}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-3.5">
+                        <span class="text-3xl sm:text-4xl bg-white p-3 rounded-2xl shadow-sm border-2 border-amber-200 group-hover:scale-110 transition-transform flex-shrink-0">
+                            ${choice.icon}
+                        </span>
+                        <span class="text-base sm:text-lg font-bold text-slate-800 leading-snug">
+                            ${choice.text}
+                        </span>
+                    </div>
+                `;
+                btn.onclick = () => handleChoice(choice, stage);
+                buttonsGrid.appendChild(btn);
+            });
+        }
+
+        function handleChoice(choice, stage) {
+            const feedbackBox = document.getElementById('feedbackBox');
+            const feedbackBadgeIcon = document.getElementById('feedbackBadgeIcon');
+            const feedbackHeading = document.getElementById('feedbackHeading');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+            const feedbackActionArea = document.getElementById('feedbackActionArea');
+
+            // Tetapkan semula gaya & animasi kotak maklum balas
+            feedbackBox.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-400', 'text-emerald-950', 'bg-rose-50', 'border-rose-300', 'text-rose-950');
+            feedbackBox.style.animation = 'none';
+            feedbackBox.offsetHeight;
+            feedbackBox.style.animation = null;
+
+            if (choice.isCorrect) {
+                playSuccessSound();
+
+                // Animasi watak tersenyum, tanda betul dan tindakan beradab
+                document.getElementById('sceneVisual').innerHTML = renderSceneSVG(stage.sceneType, true);
+                document.getElementById('choicesContainer').classList.add('hidden');
+
+                feedbackBox.classList.add('bg-emerald-50', 'border-emerald-400', 'text-emerald-950');
+                feedbackBadgeIcon.textContent = "✅";
+                feedbackBadgeIcon.className = "text-3xl sm:text-4xl bg-white p-2 rounded-2xl shadow-sm border-2 border-emerald-300";
+                feedbackHeading.textContent = choice.feedbackHeading;
+                feedbackHeading.className = "text-lg sm:text-xl font-bold mb-1 text-emerald-700";
+                feedbackMessage.textContent = choice.feedbackDesc;
+
+                feedbackActionArea.innerHTML = `
+                    <button type="button" onclick="nextStage()"
+                        class="btn-3d w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white font-title text-base sm:text-lg px-6 py-3.5 rounded-xl border-2 border-emerald-700 cursor-pointer flex items-center justify-center gap-2">
+                        <span>TERUSKAN PERJALANAN</span>
+                        <span>➡️</span>
+                    </button>
+                `;
+            } else {
+                playGentleTryAgainSound();
+
+                feedbackBox.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-950');
+                feedbackBadgeIcon.textContent = "💡";
+                feedbackBadgeIcon.className = "text-3xl sm:text-4xl bg-white p-2 rounded-2xl shadow-sm border-2 border-rose-300";
+                feedbackHeading.textContent = choice.feedbackHeading;
+                feedbackHeading.className = "text-lg sm:text-xl font-bold mb-1 text-rose-700";
+                feedbackMessage.textContent = choice.feedbackDesc;
+
+                feedbackActionArea.innerHTML = `
+                    <button type="button" onclick="retryChoice()"
+                        class="btn-3d w-full sm:w-auto bg-amber-400 hover:bg-amber-500 text-amber-950 font-title text-base sm:text-lg px-5 py-3 rounded-xl border-2 border-amber-600 cursor-pointer flex items-center justify-center gap-2">
+                        <span>🔄</span>
+                        <span>CUBA SEMULA</span>
+                    </button>
+                `;
+            }
+        }
+
+        function retryChoice() {
+            playClickSound();
+            document.getElementById('feedbackBox').classList.add('hidden');
+        }
+
+        function nextStage() {
+            playClickSound();
+            if (currentStageIndex < stages.length - 1) {
+                currentStageIndex++;
+                loadStage(currentStageIndex);
+            } else {
+                showEndScreen();
+            }
+        }
+
+        function showEndScreen() {
+            playSuccessSound();
+            document.getElementById('gameplayScreen').classList.add('hidden');
+            document.getElementById('progressBadge').classList.add('hidden');
+            document.getElementById('locationTag').classList.add('hidden');
+            document.getElementById('endScreen').classList.remove('hidden');
+            document.getElementById('sceneVisual').innerHTML = renderSceneSVG('end', true);
+        }
+
+        function resetAdventure() {
+            playClickSound();
+            startAdventure();
+        }
+
+        // Mulakan paparan utama apabila halaman dimuatkan
+        window.onload = initApp;
+    </script>
+</body>
+</html>
